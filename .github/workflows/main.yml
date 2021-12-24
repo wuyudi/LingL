@@ -24,7 +24,7 @@ jobs:
             # Used to specify the path to dependency files. Supports wildcards or a list of file names for caching multiple dependencies.
 
       - name: make
-        run: pip3 install cx_freeze && python3 setup_LINUX.py build
+        run: pip3 install cx_freeze && pip3 install -r requirements.txt && python3 setup_LINUX.py build
       - name: Upload binary
         uses: actions/upload-artifact@v2
         with:
