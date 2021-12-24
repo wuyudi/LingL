@@ -1,0 +1,80 @@
+name: python CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2.3.1
+        with:
+            # Version range or exact version of a Python version to use, using SemVer's version range syntax.
+            python-version: 3.9 # optional, default is 3.x
+            # Used to specify a package manager for caching in the default directory. Supported values: pip, pipenv.
+            cache: pip# optional
+            # The target architecture (x86, x64) of the Python interpreter.
+            architecture: x64# optional
+            # Used to specify the path to dependency files. Supports wildcards or a list of file names for caching multiple dependencies.
+
+      - name: make
+        run: python3 setup_LINUX.py build
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: LingLibre
+          path: build/
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v2.3.1
+        with:
+            # Version range or exact version of a Python version to use, using SemVer's version range syntax.
+            python-version: 3.9 # optional, default is 3.x
+            # Used to specify a package manager for caching in the default directory. Supported values: pip, pipenv.
+            cache: pip# optional
+            # The target architecture (x86, x64) of the Python interpreter.
+            architecture: x64# optional
+            # Used to specify the path to dependency files. Supports wildcards or a list of file names for caching multiple dependencies.
+
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: make
+        run: python3 setup_MACOS.py build
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: LingLibre
+          path: build
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v2.3.1
+        with:
+            # Version range or exact version of a Python version to use, using SemVer's version range syntax.
+            python-version: 3.9 # optional, default is 3.x
+            # Used to specify a package manager for caching in the default directory. Supported values: pip, pipenv.
+            cache: pip# optional
+            # The target architecture (x86, x64) of the Python interpreter.
+            architecture: x64# optional
+            # Used to specify the path to dependency files. Supports wildcards or a list of file names for caching multiple dependencies.
+
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: make
+        run: python setup_WIN32.py build
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: LingLibre
+          path: ./LingLibre.exe
